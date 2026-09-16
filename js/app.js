@@ -275,8 +275,12 @@ function createTileEl(tile) {
   el.className = "tile";
   el.dataset.id = tile.id;
   el.dataset.value = tile.value;
-  el.textContent = tile.value;
   positionTileEl(el, tile.r, tile.c);
+  const inner = document.createElement("div");
+  inner.className = "tile__inner";
+  inner.textContent = tile.value;
+  el.appendChild(inner);
+
   return el;
 }
 
@@ -288,9 +292,10 @@ function renderFull() {
   tiles.forEach((tile) => {
     const el = createTileEl(tile);
     if (tile.isNew) {
-      el.classList.add("tile--new");
+      const inner = el.querySelector(".tile__inner");
+      inner.classList.add("tile--new");
       tile.isNew = false;
-      el.addEventListener("animationend", () => el.classList.remove("tile--new"), { once: true });
+      inner.addEventListener("animationend", () => inner.classList.remove("tile--new"), { once: true });
     }
     tilesLayer.appendChild(el);
   });
@@ -298,34 +303,32 @@ function renderFull() {
   bestValueEl.textContent = best;
 }
 
-/** Рендер сразу после хода: обновляет позиции существующих плиток (анимация слайда) и убирает "съеденные" */
 function renderMove(mergedIds) {
   const existingEls = new Map();
   tilesLayer.querySelectorAll(".tile").forEach((el) => existingEls.set(el.dataset.id, el));
 
   const keepIds = new Set(tiles.map((t) => t.id));
-
-  // удаляем плитки, которые были поглощены при слиянии
   existingEls.forEach((el, id) => {
     if (!keepIds.has(id)) el.remove();
   });
 
-  // обновляем позиции оставшихся
   tiles.forEach((tile) => {
     const el = existingEls.get(tile.id);
     if (!el) return;
     el.dataset.value = tile.value;
-    el.textContent = tile.value;
+    const inner = el.querySelector(".tile__inner");
+    inner.textContent = tile.value;
     positionTileEl(el, tile.r, tile.c);
     if (mergedIds.has(tile.id)) {
-      el.classList.add("tile--pop");
-      el.addEventListener("animationend", () => el.classList.remove("tile--pop"), { once: true });
+      inner.classList.add("tile--pop");
+      inner.addEventListener("animationend", () => inner.classList.remove("tile--pop"), { once: true });
     }
   });
 
   scoreValueEl.textContent = score;
   bestValueEl.textContent = best;
 }
+
 const undoBtn = document.getElementById("undoBtn");
 const mobileControls = document.getElementById("mobileControls");
 
