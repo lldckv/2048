@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2048</title>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="header_title">2048</h1>
+      <div class="scoreboard">
+        <div class="score-box">
+          <span class="score-box_label">Очки</span>
+          <span class="score-box_value" id="scoreValue">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-box_label">Лучший счёт</span>
+          <span class="score-box_value" id="bestValue">0</span>
+        </div>
+      </div>
+      <div class="header_actions">
+        <button class="btn" id="undoBtn" type="button" title="Отменить последний ход">Отмена</button>
+        <button class="btn" id="restartBtn" type="button" title="Начать заново">Заново</button>
+        <button class="btn" id="leaderboardBtn" type="button">Рекорды</button>
+      </div>
+    </header>
+
+    <p class="hint">Управление: стрелки на клавиатуре (десктоп) ниже (моб)</p>
+    <main class="game-wrap">
+      <div class="game-container" id="gameContainer">
+        <div class="grid-bg" id="gridBg"></div>
+        <div class="tiles-layer" id="tilesLayer"></div>
+
+        <div class="game-over-overlay" id="gameOverOverlay" hidden>
+          <p class="game-over-overlay_message" id="gameOverMessage">Игра окончена!</p>
+          <input
+            type="text"
+            id="playerNameInput"
+            class="game-over-overlay_input"
+            placeholder="Введите имя"
+            maxlength="20"
+          />
+          <div class="game-over-overlay_actions">
+            <button class="btn btn--primary" id="saveScoreBtn" type="button">Сохранить результат</button>
+            <button class="btn" id="restartFromOverlayBtn" type="button">⟳ Начать заново</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-controls" id="mobileControls">
+        <button class="ctrl ctrl--up" data-dir="up" type="button" aria-label="Вверх">↑</button>
+        <button class="ctrl ctrl--left" data-dir="left" type="button" aria-label="Влево">←</button>
+        <button class="ctrl ctrl--right" data-dir="right" type="button" aria-label="Вправо">→</button>
+        <button class="ctrl ctrl--down" data-dir="down" type="button" aria-label="Вниз">↓</button>
+      </div>
+    </main>
+
+    <div class="modal" id="leaderboardModal" hidden>
+      <div class="modal_overlay" id="leaderboardOverlay"></div>
+      <div class="modal_content">
+        <button class="modal_close" id="leaderboardCloseBtn" type="button" aria-label="Закрыть">&times;</button>
+        <h2 class="modal_title">Таблица лидеров</h2>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Имя</th>
+              <th>Счет</th>
+              <th>Дата</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+        <p class="leaderboard-empty" id="leaderboardEmpty" hidden>Пока нет рекордов</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
